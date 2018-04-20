@@ -17,10 +17,13 @@
 	},
 	"homepage": "https://github.com/JimmyLERAY/CodeRoyale#readme",
 	"devDependencies": {
+		"ts-loader": "^4.2.0",
+		"typescript": "^2.8.3",
 		"webpack": "^4.0.1",
 		"webpack-cli": "^2.0.10"
 	},
 	"dependencies": {
+		"@types/ramda": "^0.25.24",
 		"ramda": "^0.25.0"
 	}
 }
