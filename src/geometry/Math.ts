@@ -1,23 +1,21 @@
 // Import functionnal library Ramda
 import * as R from 'ramda'
+import { Point } from './Point'
+import { Circle } from './Circle'
+import { Line } from './Line'
 
-export const square = x => Math.pow(x, 2)
+export const square = (x: number) => Math.pow(x, 2)
 
-export const addBy = key => (a, b) => R.add(a, b[key])
+export const addBy = (key: string) => (a: number, b: any): number => R.add(a, b[key])
 
-export const countBy = key => R.reduce(addBy(key), 0)
+export const countBy = (key: string) => R.reduce(addBy(key), 0)
 
-export const meanBy = key => R.converge(R.divide, [countBy(key), R.length])
+export const meanBy = (key: string) => R.converge(R.divide, [countBy(key), R.length])
 
-export const massCenter = R.converge((x, y) => ({ x, y }), [
-	meanBy('x'),
-	meanBy('y')
-])
-
-export const distance = start => end =>
+export const distance = (start: Point) => (end: Point) =>
 	Math.sqrt(square(start.x - end.x) + square(start.y - end.y))
 
-export const nearestPosition = focus => positions => {
+export const nearestPosition = (focus: Point) => (positions: Point[]) => {
 	const distOf = distance(focus)
 
 	return R.reduce(
@@ -27,9 +25,9 @@ export const nearestPosition = focus => positions => {
 	)
 }
 
-export const nearestPositionFrom = focus => nearestPosition(focus)
+export const nearestPositionFrom = (focus: Point) => nearestPosition(focus)
 
-export const intersectBetweenCircleAndLine = (circle, line) => {
+export const intersectBetweenCircleAndLine = (circle: Circle, line: Line) => {
 	// circle : (x - xc)** 2 + (y - yc)**2 = r**2
 	// line : y = ax + b
 	const a = line.a
@@ -43,8 +41,7 @@ export const intersectBetweenCircleAndLine = (circle, line) => {
 	// AX**2 + BX + C = 0
 	const A = 1 + square(a)
 	const B = 2 * a * b - 2 * xc - 2 * a * yc
-	const C =
-		square(xc) + square(yc) + square(a) + square(b) - square(r) - 2 * b * yc
+	const C = square(xc) + square(yc) + square(a) + square(b) - square(r) - 2 * b * yc
 	const D = square(B) - 4 * A * C
 	const x1 = R.divide(-B + Math.sqrt(D), 2 * A)
 	const x2 = R.divide(-B - Math.sqrt(D), 2 * A)
