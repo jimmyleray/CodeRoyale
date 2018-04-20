@@ -1,8 +1,7 @@
-// Import functionnal library Ramda
 import * as R from 'ramda'
-import { Point } from './Point'
-import { Circle } from './Circle'
-import { Line } from './Line'
+import { Circle, Line, Point } from '../geometry/index'
+
+export const splitToNumber = (str: string): number[] => str.split(' ').map(Number)
 
 export const square = (x: number) => Math.pow(x, 2)
 
@@ -27,14 +26,9 @@ export const nearestPosition = (focus: Point) => (positions: Point[]) => {
 
 export const nearestPositionFrom = (focus: Point) => nearestPosition(focus)
 
-export const intersectBetweenCircleAndLine = (circle: Circle, line: Line) => {
-	// circle : (x - xc)** 2 + (y - yc)**2 = r**2
-	// line : y = ax + b
-	const a = line.a
-	const b = line.b
-	const xc = circle.center.x
-	const yc = circle.center.y
-	const r = circle.radius
+export const intersectBetweenCircleAndLine = (circle: Circle, line: Line): Point[] => {
+	// circle : (x - xc)** 2 + (y - yc)**2 = r**2 --- line : y = ax + b
+	const [a, b, xc, yc, r] = [line.a, line.b, circle.center.x, circle.center.x, circle.radius]
 	// x**2 - 2x*xc + xc**2 + y**2 - 2*y*yc + yc**2 - r**2 = 0
 	// x**2 -2x*xc + xc**2 + a**2 * x**2 + 2axb + b**2 - 2*ax*yc - 2*b*yc + yc**2 - r**2 = 0
 	// (1 + a**2) * x**2 + (-2*xc + 2ab - 2*a*yc) * x + xc**2 + a**2 + b**2 - 2*b*yc + yc**2 - r**2 = 0
@@ -42,10 +36,14 @@ export const intersectBetweenCircleAndLine = (circle: Circle, line: Line) => {
 	const A = 1 + square(a)
 	const B = 2 * a * b - 2 * xc - 2 * a * yc
 	const C = square(xc) + square(yc) + square(a) + square(b) - square(r) - 2 * b * yc
-	const D = square(B) - 4 * A * C
-	const x1 = R.divide(-B + Math.sqrt(D), 2 * A)
-	const x2 = R.divide(-B - Math.sqrt(D), 2 * A)
-	const y1 = a * x1 + b
-	const y2 = a * x2 + b
-	return [{ x: x1, y: y1 }, { x: x2, y: y2 }]
+	return trinome(A, B, C).map(x => new Point(x, a * x + b))
+}
+
+export const trinome = (a: number, b: number, c: number): number[] => {
+	const disc = square(b) - 4 * a * c
+	return disc > 0
+		? [(-b + Math.sqrt(disc)) / (2 * a), (-b - Math.sqrt(disc)) / (2 * a)]
+		: disc === 0
+			? [-b / (2 * a)]
+			: []
 }

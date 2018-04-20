@@ -1,4 +1,4 @@
-import { Point } from './Point'
+import { Point } from '../geometry/index'
 
 export class Line {
 	public a: number
@@ -6,6 +6,6 @@ export class Line {
 
 	constructor(public A: Point, public B: Point) {
 		this.a = (B.y - A.y) / (B.x - A.x)
-		this.b = A.y / (this.a * A.x)
+		this.b = A.y - this.a * A.x
 	}
 }
