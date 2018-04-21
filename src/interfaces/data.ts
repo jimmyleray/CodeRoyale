@@ -7,4 +7,5 @@ export interface Data {
 	touchedSite: number
 	gold: number
 	myQueen: Unit
+	enemyQueen: Unit
 }

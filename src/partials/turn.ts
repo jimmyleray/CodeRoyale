@@ -10,7 +10,7 @@ import { builds } from './builds'
 declare const readline: () => string
 
 export const turn = (sites: Site[]): void => {
-	const [gold, touchedSite] = splitToNumber(readline())
+	const [gold, touchedSite]: number[] = splitToNumber(readline())
 
 	// Sites params update
 	sites.forEach(site => {
@@ -33,9 +33,10 @@ export const turn = (sites: Site[]): void => {
 	}
 
 	const myQueen = R.find(unit => unit.type === -1 && unit.owner === 0, units)
+	const enemyQueen = R.find(unit => unit.type === -1 && unit.owner === 1, units)
 
 	// Dataset of the turn situation
-	const data: Data = { sites, units, touchedSite, gold, myQueen }
+	const data: Data = { sites, units, touchedSite, gold, myQueen, enemyQueen }
 
 	// A valid queen
 	// instruction
