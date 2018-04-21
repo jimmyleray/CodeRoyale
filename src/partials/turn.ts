@@ -1,24 +1,16 @@
 import * as R from 'ramda'
-import {
-	Site,
-	splitToNumber,
-	Unit,
-	nearestPositionFrom,
-	intersectBetweenCircleAndLine,
-	distance
-} from '../specific/index'
-import { Circle, Point, Line } from '../geometry/index'
+import { splitToNumber } from '../specific/utils'
+import { Site } from '../specific/Site'
+import { Unit } from '../specific/Unit'
+import { Point } from '../geometry/Point'
+import { Data } from '../interfaces/data'
+import { queen } from './queen'
+import { builds } from './builds'
 
-// Tricky declarations to avoid
-// TypeScript compilation errors
-// on global Coding Game variables
 declare const readline: () => string
-declare const print: (res: string) => void
-declare const printErr: (err: any) => void
 
 export const turn = (sites: Site[]): void => {
 	const [gold, touchedSite] = splitToNumber(readline())
-	printErr(`gold = ${gold}, touchedSite = ${touchedSite}`)
 
 	// Sites params update
 	sites.forEach(site => {
@@ -42,33 +34,14 @@ export const turn = (sites: Site[]): void => {
 
 	const myQueen = R.find(unit => unit.type === -1 && unit.owner === 0, units)
 
-	// First line: A valid queen action
-	if (touchedSite > -1 && sites[touchedSite].owner === 'None') {
-		print(`BUILD ${touchedSite} BARRACKS-KNIGHT`)
-	} else {
-		if (sites.filter(site => site.owner === 'None').length > 0) {
-			const nearestSite: Point = nearestPositionFrom(myQueen.position)(
-				sites.filter(site => site.structure === 'None').map(site => site.circle.center)
-			)
-			print(`MOVE ${Math.round(nearestSite.x)} ${Math.round(nearestSite.y)}`)
-		} else {
-			print('WAIT')
-		}
-	}
+	// Dataset of the turn situation
+	const data: Data = { sites, units, touchedSite, gold, myQueen }
 
-	// Second line: A set of training instructions
-	let totalCost = 0
-	const trainList: Site[] = new Array<Site>()
-	sites.filter(site => site.owner === 'Friendly' && site.turns === 0).forEach(site => {
-		if (totalCost + site.cost <= gold) {
-			totalCost += site.cost
-			trainList.push(site)
-		}
-	})
+	// A valid queen
+	// instruction
+	queen(data)
 
-	if (trainList.length > 0) {
-		print(`TRAIN ${trainList.map(site => site.id.toString()).join(' ')}`)
-	} else {
-		print(`TRAIN`)
-	}
+	// A set of training
+	// instructions
+	builds(data)
 }

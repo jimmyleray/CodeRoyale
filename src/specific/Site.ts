@@ -1,14 +1,18 @@
-import { Circle } from '../geometry/index'
+import { Circle } from '../geometry/Circle'
 
 export class Site {
 	public _ignore1: any // used in future leagues
 	public _ignore2: any // used in future leagues
-	public structure: string // None, Barracks
+	public structure: string // None, Barracks, Tower
 	public owner: string // None, Friendly or Enemy
-	public turns: number // Number of turns before
-	public units: string // Type of units
-	public cost: number // if is Barracks
-	public range: number // if is Tower
+
+	// If is Barracks
+	public turns: number
+	public units: string
+	public cost: number
+
+	// If is Tower
+	public range: number
 	public health: number
 
 	constructor(public id: number, public circle: Circle) {}
@@ -36,5 +40,29 @@ export class Site {
 		} else if (this.structure === 'Tower') {
 			this.range = value
 		}
+	}
+
+	isBuilt(): boolean {
+		return this.owner !== 'None'
+	}
+
+	isFriendly(): boolean {
+		return this.owner === 'Friendly'
+	}
+
+	isEnemy(): boolean {
+		return this.owner === 'Enemy'
+	}
+
+	isBarracks(): boolean {
+		return this.structure === 'Barracks'
+	}
+
+	isTower(): boolean {
+		return this.structure === 'Tower'
+	}
+
+	canTrain(): boolean {
+		return this.isFriendly() && this.isBarracks() && this.turns === 0
 	}
 }

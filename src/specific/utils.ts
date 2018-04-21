@@ -1,5 +1,7 @@
 import * as R from 'ramda'
-import { Circle, Line, Point } from '../geometry/index'
+import { Point } from '../geometry/Point'
+import { Circle } from '../geometry/Circle'
+import { Line } from '../geometry/Line'
 
 export const splitToNumber = (str: string): number[] => str.split(' ').map(Number)
 

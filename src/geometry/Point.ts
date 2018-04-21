@@ -1,4 +1,4 @@
-import { meanBy } from '../specific/index'
+import { meanBy } from '../specific/utils'
 
 export class Point {
 	constructor(public x: number, public y: number) {}

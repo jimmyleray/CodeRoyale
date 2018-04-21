@@ -1,12 +1,9 @@
-import { Site, splitToNumber } from '../specific/index'
-import { Circle, Point } from '../geometry/index'
+import { Site } from '../specific/Site'
+import { Circle } from '../geometry/Circle'
+import { Point } from '../geometry/Point'
+import { splitToNumber } from '../specific/utils'
 
-// Tricky declarations to avoid
-// TypeScript compilation errors
-// on global Coding Game variables
 declare const readline: () => string
-declare const print: (res: string) => void
-declare const printErr: (err: any) => void
 
 export const init = (): Site[] => {
 	const sites = new Array<Site>()
@@ -17,6 +14,5 @@ export const init = (): Site[] => {
 		sites.push(new Site(id, new Circle(new Point(x, y), radius)))
 	}
 
-	printErr(`numSites = ${sites.length}`)
 	return sites
 }

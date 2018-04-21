@@ -1,4 +1,4 @@
-import { Point } from '../geometry/index'
+import { Point } from '../geometry/Point'
 
 export class Unit {
 	constructor(

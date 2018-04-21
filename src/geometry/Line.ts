@@ -1,4 +1,4 @@
-import { Point } from '../geometry/index'
+import { Point } from './Point'
 
 export class Line {
 	public a: number
