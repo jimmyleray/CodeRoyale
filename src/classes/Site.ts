@@ -1,28 +1,35 @@
-import { Circle } from '../geometry/Circle'
+import { Circle } from './Circle'
 
 export class Site {
-	public _ignore1: any // used in future leagues
-	public _ignore2: any // used in future leagues
 	public structure: string // None, Barracks, Tower
 	public owner: string // None, Friendly or Enemy
 
+	// For Mines
+	public gold: number
+	public maxMineRate: number
+	public mineRate: number
+
 	// If is Barracks
 	public turns: number
-	public units: string
+	public unit: string
 	public cost: number
 
 	// If is Tower
 	public range: number
 	public health: number
 
+	private structures: string[] = ['Mine', 'Tower', 'Barracks']
+	private units: string[] = ['Knight', 'Archer', 'Giant']
+	private costs: number[] = [80, 100, 140]
+
 	constructor(public id: number, public circle: Circle) {}
 
 	set _owner(value: number) {
-		this.owner = value === -1 ? 'None' : value === 0 ? 'Friendly' : 'Enemy'
+		this.owner = value < 0 ? 'None' : value === 0 ? 'Friendly' : 'Enemy'
 	}
 
 	set _structure(value: number) {
-		this.structure = value === -1 ? 'None' : value === 1 ? 'Tower' : 'Barracks'
+		this.structure = value < 0 ? 'None' : this.structures[value]
 	}
 
 	set _param1(value: number) {
@@ -30,13 +37,15 @@ export class Site {
 			this.turns = value
 		} else if (this.structure === 'Tower') {
 			this.health = value
+		} else if (this.structure === 'Mine') {
+			this.mineRate = value
 		}
 	}
 
 	set _param2(value: number) {
 		if (this.structure === 'Barracks') {
-			this.units = value === 0 ? 'Knight' : value === 1 ? 'Archer' : 'Giant'
-			this.cost = this.units === 'Knight' ? 80 : this.units === 'Archer' ? 100 : 140
+			this.unit = this.units[value]
+			this.cost = this.costs[value]
 		} else if (this.structure === 'Tower') {
 			this.range = value
 		}
@@ -54,8 +63,24 @@ export class Site {
 		return this.owner === 'Enemy'
 	}
 
+	isMine(): boolean {
+		return this.structure === 'Mine'
+	}
+
 	isBarracks(): boolean {
 		return this.structure === 'Barracks'
+	}
+
+	isKnightBarracks(): boolean {
+		return this.isBarracks() && this.unit === 'Knight'
+	}
+
+	isArcherBarracks(): boolean {
+		return this.isBarracks() && this.unit === 'Archer'
+	}
+
+	isGiantBarracks(): boolean {
+		return this.isBarracks() && this.unit === 'Giant'
 	}
 
 	isTower(): boolean {

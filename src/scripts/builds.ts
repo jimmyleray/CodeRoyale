@@ -1,6 +1,7 @@
+import * as R from 'ramda'
 import { Data } from '../interfaces/data'
-import { distance } from '../specific/utils'
-import { Site } from '../specific/Site'
+import { Maths } from '../classes/Maths'
+import { Site } from '../classes/Site'
 import { TRAIN } from './actions'
 
 declare const printErr: (err: any) => void
@@ -8,7 +9,8 @@ declare const printErr: (err: any) => void
 export const builds = (data: Data) => {
 	let totalCost = 0
 	const list: Site[] = new Array<Site>()
-	const distanceFromEnemyQueen = distance(data.enemyQueen.position)
+	const enemyQueen = R.find(unit => unit.isEnemy() && unit.isQueen(), data.units)
+	const distanceFromEnemyQueen = Maths.distance(enemyQueen.position)
 
 	data.sites
 		.filter(site => site.canTrain())

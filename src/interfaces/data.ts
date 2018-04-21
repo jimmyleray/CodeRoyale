@@ -1,11 +1,9 @@
-import { Site } from '../specific/Site'
-import { Unit } from '../specific/Unit'
+import { Site } from '../classes/Site'
+import { Unit } from '../classes/Unit'
 
 export interface Data {
 	sites: Site[]
 	units: Unit[]
 	touchedSite: number
 	gold: number
-	myQueen: Unit
-	enemyQueen: Unit
 }

@@ -1,4 +1,4 @@
-import { Site } from '../specific/Site'
+import { Site } from '../classes/Site'
 
 declare const print: (res: string) => void
 

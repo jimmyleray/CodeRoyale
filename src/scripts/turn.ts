@@ -1,42 +1,39 @@
 import * as R from 'ramda'
-import { splitToNumber } from '../specific/utils'
-import { Site } from '../specific/Site'
-import { Unit } from '../specific/Unit'
-import { Point } from '../geometry/Point'
+import { Site } from '../classes/Site'
+import { Unit } from '../classes/Unit'
+import { Point } from '../classes/Point'
 import { Data } from '../interfaces/data'
+import { Maths } from '../classes/Maths'
 import { queen } from './queen'
 import { builds } from './builds'
 
 declare const readline: () => string
 
 export const turn = (sites: Site[]): void => {
-	const [gold, touchedSite]: number[] = splitToNumber(readline())
+	const [gold, touchedSite]: number[] = Maths.splitToNumber(readline())
 
 	// Sites params update
 	sites.forEach(site => {
 		return ([
-			site._ignore1,
-			site._ignore2,
+			site.gold,
+			site.maxMineRate,
 			site._structure,
 			site._owner,
 			site._param1,
 			site._param2
-		] = R.tail(splitToNumber(readline())))
+		] = R.tail(Maths.splitToNumber(readline())))
 	})
 
 	const units = new Array<Unit>()
 	const numUnits = Number(readline())
 
 	for (let i = 0; i < numUnits; i++) {
-		const [x, y, owner, type, health]: number[] = splitToNumber(readline())
+		const [x, y, owner, type, health]: number[] = Maths.splitToNumber(readline())
 		units.push(new Unit(new Point(x, y), owner, type, health))
 	}
 
-	const myQueen = R.find(unit => unit.type === -1 && unit.owner === 0, units)
-	const enemyQueen = R.find(unit => unit.type === -1 && unit.owner === 1, units)
-
 	// Dataset of the turn situation
-	const data: Data = { sites, units, touchedSite, gold, myQueen, enemyQueen }
+	const data: Data = { sites, units, touchedSite, gold }
 
 	// A valid queen
 	// instruction
