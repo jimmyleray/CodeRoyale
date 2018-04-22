@@ -5,8 +5,8 @@ export class Site {
 	public owner: string // None, Friendly or Enemy
 
 	// For Mines
-	public gold: number
-	public maxMineRate: number
+	public gold: number = -1
+	public maxMineRate: number = -1
 	public mineRate: number
 
 	// If is Barracks
@@ -24,12 +24,20 @@ export class Site {
 
 	constructor(public id: number, public circle: Circle) {}
 
+	set _maxMineRate(value: number) {
+		this.maxMineRate = value < 0 ? this.maxMineRate : value
+	}
+
+	set _gold(value: number) {
+		this.gold = value < 0 ? this.gold : value
+	}
+
 	set _owner(value: number) {
-		this.owner = value < 0 ? 'None' : value === 0 ? 'Friendly' : 'Enemy'
+		this.owner = value === 1 ? 'Enemy' : value === 0 ? 'Friendly' : 'None'
 	}
 
 	set _structure(value: number) {
-		this.structure = value < 0 ? 'None' : this.structures[value]
+		this.structure = value >= 0 ? this.structures[value] : 'None'
 	}
 
 	set _param1(value: number) {

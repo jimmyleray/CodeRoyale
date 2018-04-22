@@ -14,7 +14,6 @@ export const MOVE = (x: number, y: number) => {
 	print(`MOVE ${Math.round(x)} ${Math.round(y)}`)
 }
 
-export const TRAIN = (trainList: Site[]) => {
-	const list = trainList.map(site => site.id.toString()).join(' ')
-	print(list.length > 0 ? `TRAIN ${list}` : 'TRAIN')
+export const TRAIN = (list: Site[]) => {
+	print(`TRAIN ${list.map(site => site.id).join(' ')}`.trim())
 }

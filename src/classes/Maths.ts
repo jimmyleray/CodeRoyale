@@ -1,4 +1,3 @@
-import * as R from 'ramda'
 import { Point } from './Point'
 import { Circle } from './Circle'
 import { Line } from './Line'
@@ -8,11 +7,11 @@ export class Maths {
 
 	static square = (x: number) => Math.pow(x, 2)
 
-	static addBy = (key: string) => (a: number, b: any): number => R.add(a, b[key])
+	static addBy = (key: string) => (a: number, b: any): number => a + b[key]
 
-	static countBy = (key: string) => R.reduce(Maths.addBy(key), 0)
+	static countBy = (key: string) => (array: any[]) => array.reduce(Maths.addBy(key), 0)
 
-	static meanBy = (key: string) => R.converge(R.divide, [Maths.countBy(key), R.length])
+	static meanBy = (key: string) => (array: any[]) => Maths.countBy(key)(array) / array.length
 
 	static distance = (start: Point) => (end: Point) =>
 		Math.sqrt(Maths.square(start.x - end.x) + Maths.square(start.y - end.y))
@@ -20,10 +19,9 @@ export class Maths {
 	static nearestPosition = (focus: Point) => (positions: Point[]) => {
 		const distOf = Maths.distance(focus)
 
-		return R.reduce(
+		return positions.reduce(
 			(nearest, actual) => (distOf(actual) < distOf(nearest) ? actual : nearest),
-			positions[0],
-			positions
+			positions[0]
 		)
 	}
 

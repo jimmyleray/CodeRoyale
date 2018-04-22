@@ -5,7 +5,7 @@ import { Maths } from '../classes/Maths'
 
 declare const readline: () => string
 
-export const init = (): Site[] => {
+export const firstTurn = (): Site[] => {
 	const sites = new Array<Site>()
 	const numSites: number = Number(readline())
 

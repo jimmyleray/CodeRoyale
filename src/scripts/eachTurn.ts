@@ -1,27 +1,25 @@
-import * as R from 'ramda'
 import { Site } from '../classes/Site'
 import { Unit } from '../classes/Unit'
 import { Point } from '../classes/Point'
 import { Data } from '../interfaces/data'
 import { Maths } from '../classes/Maths'
-import { queen } from './queen'
-import { builds } from './builds'
+import { heuristic } from './heuristic'
 
 declare const readline: () => string
 
-export const turn = (sites: Site[]): void => {
+export const eachTurn = (sites: Site[]): void => {
 	const [gold, touchedSite]: number[] = Maths.splitToNumber(readline())
 
 	// Sites params update
 	sites.forEach(site => {
 		return ([
-			site.gold,
-			site.maxMineRate,
+			site._gold,
+			site._maxMineRate,
 			site._structure,
 			site._owner,
 			site._param1,
 			site._param2
-		] = R.tail(Maths.splitToNumber(readline())))
+		] = Maths.splitToNumber(readline()).slice(1))
 	})
 
 	const units = new Array<Unit>()
@@ -35,11 +33,6 @@ export const turn = (sites: Site[]): void => {
 	// Dataset of the turn situation
 	const data: Data = { sites, units, touchedSite, gold }
 
-	// A valid queen
-	// instruction
-	queen(data)
-
-	// A set of training
-	// instructions
-	builds(data)
+	// Output instructions
+	heuristic(data)
 }

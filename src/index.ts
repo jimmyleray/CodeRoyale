@@ -1,10 +1,10 @@
-import { init } from './scripts/init'
-import { turn } from './scripts/turn'
+import { firstTurn } from './scripts/firstTurn'
+import { eachTurn } from './scripts/eachTurn'
 import { Site } from './classes/Site'
 
 // First turn instructions
 // Sites Array Initialization
-const sites: Site[] = init()
+const sites: Site[] = firstTurn()
 
 // Infinite Game Loop
-while (true) turn(sites)
+while (true) eachTurn(sites)
