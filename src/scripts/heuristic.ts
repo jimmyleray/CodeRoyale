@@ -6,11 +6,6 @@ import { Point } from '../classes/Point'
 
 declare const printErr: (err: any) => void
 
-enum Strategies {
-	'Attack', // we train knight and giant to kill enemy queen
-	'Defense' // we play eco, build tower and archer to defend
-}
-
 export const heuristic = (data: Data) => {
 	const myQueen = data.units.find(unit => unit.isFriendly() && unit.isQueen())
 	const nearestFromMyQueen = Maths.nearestPositionFrom(myQueen.position)
@@ -43,76 +38,45 @@ export const heuristic = (data: Data) => {
 	const myArcherBarracks = data.sites.filter(site => site.isArcherBarracks() && site.isFriendly())
 	const myKnightBarracks = data.sites.filter(site => site.isKnightBarracks() && site.isFriendly())
 
-	const currentStrategy = () => {
-		if (enemyMines.length > myMines.length) {
-			// Enemy has probably a better economy
-			// I need to attack him now
-			// to try to come back
-			return Strategies.Attack
-		} else {
-			// I probably have a better
-			// economy than my enemy
-			if (data.gold < 80 * 5) {
-				// If i dont have enougth
-				// to train a great army
-				// i continue to play
-				// defensive and eco
-				return Strategies.Defense
-			} else {
-				// If i have enougth
-				// to train a finish-game army
-				// i return to attack
-				return Strategies.Attack
-			}
-		}
-	}
-
 	/**
 	 * QUEEN INSTRUCTIONS
 	 */
 
-	if (currentStrategy() === Strategies.Defense) {
-		if (enemyKnights.length > 2) {
-			// Enemy can attack my Queen
-			// I need to defend her
-			if (myArcherBarracks.length > 0) {
-				// I already have a building
-				// to train archer
-				// I will build a tower
-				// to defend myself
+	if (myQueen.health < 20 && enemyKnights.length > 0) {
+		BUILD(nearestUnbuildSite.id, 'TOWER')
+	} else {
+		if (data.gold > 400) {
+			if (myKnightBarracks.length > 0) {
+				// if i already have barracks
+				// i can build tower to
+				// protect my knights
+				// from enemies archers
 				BUILD(nearestUnbuildSite.id, 'TOWER')
+			} else {
+				// i dont have barracks
+				// but i need to attack
+				// so i build one now
+				BUILD(nearestUnbuildSite.id, 'BARRACKS-KNIGHT')
+			}
+		} else {
+			if (myArcherBarracks.length > 0) {
+				// Enemy can attack my Queen
+				// I need to defend her
+				// I already have an archer barrack
+				if (myMinesWithoutOptimalMineRate.length > 0) {
+					// If i can upgrade a mine
+					BUILD(nearestSiteFromMyQueen(myMinesWithoutOptimalMineRate).id, 'MINE')
+				} else {
+					// Else i build another one
+					BUILD(nearestUnbuildSiteWithGold.id, 'MINE')
+				}
 			} else {
 				// I dont have archerBarracks
 				// I need to build one
 				// to train archers
 				BUILD(nearestUnbuildSite.id, 'BARRACKS-ARCHER')
 			}
-		} else {
-			// Enemy cant attack my Queen
-			// I can play economy
-			if (myMinesWithoutOptimalMineRate.length > 0) {
-				// If i can upgrade a mine
-				BUILD(nearestSiteFromMyQueen(myMinesWithoutOptimalMineRate).id, 'MINE')
-			} else {
-				// Else i build another one
-				BUILD(nearestUnbuildSiteWithGold.id, 'MINE')
-			}
 		}
-	} else if (currentStrategy() === Strategies.Attack) {
-		if (myKnightBarracks.length > 0) {
-			// if i already have barracks
-			// i can build tower to
-			// protect my knights
-			// from enemies archers
-			BUILD(nearestUnbuildSite.id, 'TOWER')
-		} else {
-			// i dont have barracks
-			// but i need to attack
-			// so i build one now
-			BUILD(nearestUnbuildSite.id, 'BARRACKS-KNIGHT')
-		}
-	} else {
-		WAIT()
 	}
 
 	/**

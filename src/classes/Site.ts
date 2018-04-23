@@ -5,7 +5,7 @@ export class Site {
 	public owner: string // None, Friendly or Enemy
 
 	// For Mines
-	public gold: number = -1
+	public gold: number = 1
 	public maxMineRate: number = -1
 	public mineRate: number
 
