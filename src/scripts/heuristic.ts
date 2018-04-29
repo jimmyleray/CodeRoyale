@@ -42,41 +42,22 @@ export const heuristic = (data: Data) => {
 	 * QUEEN INSTRUCTIONS
 	 */
 
-	if (myQueen.health < 20 && enemyKnights.length > 0) {
-		BUILD(nearestUnbuildSite.id, 'TOWER')
-	} else {
-		if (data.gold > 400) {
-			if (myKnightBarracks.length > 0) {
-				// if i already have barracks
-				// i can build tower to
-				// protect my knights
-				// from enemies archers
-				BUILD(nearestUnbuildSite.id, 'TOWER')
-			} else {
-				// i dont have barracks
-				// but i need to attack
-				// so i build one now
-				BUILD(nearestUnbuildSite.id, 'BARRACKS-KNIGHT')
-			}
+	if (myKnightBarracks.length > 0) {
+		// Enemy can attack my Queen
+		// I need to defend her
+		// I already have an archer barrack
+		if (myMinesWithoutOptimalMineRate.length > 0) {
+			// If i can upgrade a mine
+			BUILD(nearestSiteFromMyQueen(myMinesWithoutOptimalMineRate).id, 'MINE')
 		} else {
-			if (myArcherBarracks.length > 0) {
-				// Enemy can attack my Queen
-				// I need to defend her
-				// I already have an archer barrack
-				if (myMinesWithoutOptimalMineRate.length > 0) {
-					// If i can upgrade a mine
-					BUILD(nearestSiteFromMyQueen(myMinesWithoutOptimalMineRate).id, 'MINE')
-				} else {
-					// Else i build another one
-					BUILD(nearestUnbuildSiteWithGold.id, 'MINE')
-				}
-			} else {
-				// I dont have archerBarracks
-				// I need to build one
-				// to train archers
-				BUILD(nearestUnbuildSite.id, 'BARRACKS-ARCHER')
-			}
+			// Else i build another one
+			BUILD(nearestUnbuildSiteWithGold.id, 'MINE')
 		}
+	} else {
+		// I dont have archerBarracks
+		// I need to build one
+		// to train archers
+		BUILD(nearestUnbuildSite.id, 'BARRACKS-KNIGHT')
 	}
 
 	/**
