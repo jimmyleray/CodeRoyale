@@ -1,26 +1,26 @@
 {
-	"name": "code_royale",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"build": "webpack-cli --mode=production -w"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/JimmyLERAY/CodeRoyale.git"
-	},
-	"author": "Jimmy LERAY",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/JimmyLERAY/CodeRoyale/issues"
-	},
-	"homepage": "https://github.com/JimmyLERAY/CodeRoyale#readme",
-	"devDependencies": {
-		"ts-loader": "^4.2.0",
-		"typescript": "^2.8.3",
-		"webpack": "^4.0.1",
-		"webpack-cli": "^2.0.10"
-	},
-	"dependencies": {}
+  "name": "code_royale",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack-cli --mode=production -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JimmyLERAY/CodeRoyale.git"
+  },
+  "author": "Jimmy LERAY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JimmyLERAY/CodeRoyale/issues"
+  },
+  "homepage": "https://github.com/JimmyLERAY/CodeRoyale#readme",
+  "devDependencies": {
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.3",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.10"
+  },
+  "dependencies": {}
 }
